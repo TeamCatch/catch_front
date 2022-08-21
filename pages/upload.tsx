@@ -42,8 +42,8 @@ const WebcamCapture = () => {
   }, [webcamRef]);
 
   const videoConstraints = {
-    width: 100,
-    height: 100,
+    width: 2000,
+    height: 2000,
     facingMode: 'environment',
   };
 
@@ -87,14 +87,13 @@ const WebcamCapture = () => {
           ref={webcamRef}
           screenshotFormat="image/jpeg"
           videoConstraints={videoConstraints}
-          forceScreenshotSourceSize
           style={{
             width: '100%',
             height: '100%',
             position: 'absolute',
             left: '50%',
             marginLeft: '-50%',
-            objectFit: 'contain',
+            objectFit: 'cover',
             objectPosition: 'center',
           }}
         />
