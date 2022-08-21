@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.10.1",
     "@next/bundle-analyzer": "^12.1.6",
     "@types/styled-components": "^5.1.26",
     "lottie-web": "^5.9.6",
