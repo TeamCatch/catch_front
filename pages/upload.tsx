@@ -11,6 +11,10 @@ interface MyFile extends File {
   lastModified: any;
 }
 
+interface ImagePorps {
+  readonly src: string;
+}
+
 const UploadPage: NextPage = () => {
   const router = useRouter();
 
@@ -90,7 +94,6 @@ const WebcamCapture = () => {
         />
       </div>
       <Button onClick={capture} />
-      {imgSrc && <img src={imgSrc} />}
     </>
   );
 };
