@@ -30,22 +30,37 @@ const WebcamCapture = () => {
   const webcamRef = useRef<Webcam>(null);
   const [imgSrc, setImgSrc] = useState<string | null | undefined>(null);
   const [imgFile, setImgFile] = useState<MyFile | null>(null);
+  const [isPC, setIsPC] = useState(true);
+  let filter =
+    'win16|win32|win64|wince|mac|macintel|macppc|mac68k|linux i686|linux armv7l|hp-ux|sunos';
+
+  // 접속 기기가 pc인지 확인
+  useEffect(() => {
+    if (navigator.platform) {
+      if (filter.indexOf(navigator.platform.toLowerCase()) < 0) {
+        setIsPC(false);
+      }
+    }
+  }, []);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef?.current?.getScreenshot();
     if (imageSrc) {
       setImgSrc(imageSrc);
+      console.log(imageSrc);
       const file = dataURLtoFile(imageSrc, 'upload_img');
+      console.log(file);
       setImgFile(file);
       onSubmitImageFile();
     }
   }, [webcamRef]);
 
   const videoConstraints = {
-    width: 2000,
-    height: 2000,
+    width: isPC ? 400 : 2000,
+    height: isPC ? 400 : 2000,
     facingMode: 'environment',
   };
+  console.log(videoConstraints);
 
   useEffect(() => {
     let navi: any;
