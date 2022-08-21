@@ -28,26 +28,30 @@ const UploadPage: NextPage = () => {
 const WebcamCapture = () => {
   const router = useRouter();
   const webcamRef = useRef<Webcam>(null);
-  const [imgSrc, setImgSrc] = useState<MyFile | null>(null);
-  const [imgFile, setImgFile] = useState(null);
+  const [imgSrc, setImgSrc] = useState<string | null | undefined>(null);
+  const [imgFile, setImgFile] = useState<MyFile | null>(null);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef?.current?.getScreenshot();
-    setImgSrc(imageSrc);
-    const file = dataURLtoFile(imageSrc, 'upload_img');
-    setImgFile(file);
-    onSubmitImageFile();
+    if (imageSrc) {
+      setImgSrc(imageSrc);
+      const file = dataURLtoFile(imageSrc, 'upload_img');
+      setImgFile(file);
+      onSubmitImageFile();
+    }
   }, [webcamRef]);
 
   const videoConstraints = {
-    width: '100vw',
-    height: '100vh',
+    width: 100,
+    height: 100,
     facingMode: 'environment',
   };
 
   useEffect(() => {
-    if (navigator.mediaDevices.getUserMedia !== null) {
-      navigator.getUserMedia(
+    let navi: any;
+    navi = navigator;
+    if (navi && navi.mediaDevices.getUserMedia !== null && navi.getUserMedia) {
+      navi.getUserMedia(
         { video: true },
         function (stream: any) {
           stream.getTracks().forEach((x: any) => x.stop());
@@ -57,12 +61,13 @@ const WebcamCapture = () => {
     }
   }, []);
 
-  const dataURLtoFile = (dataurl, fileName) => {
-    var arr = dataurl.split(','),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
+  const dataURLtoFile = (dataurl: string, fileName: string) => {
+    let arr: any[];
+    arr = dataurl.split(',');
+    let mime = arr[0]?.match(/:(.*?);/)[1];
+    let bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
 
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
