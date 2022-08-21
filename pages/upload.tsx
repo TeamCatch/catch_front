@@ -5,51 +5,50 @@ import styles from '../styles/Home.module.css';
 import { useRouter } from 'next/router';
 import Webcam from 'react-webcam';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+
+interface MyFile extends File {
+  lastModified: any;
+}
 
 const UploadPage: NextPage = () => {
   const router = useRouter();
 
   return (
     <div>
-      <div>안녕</div>
       <WebcamCapture />
     </div>
   );
 };
 
-const videoConstraints = {
-  width: 1280,
-  height: 720,
-  facingMode: 'user',
-};
-
 const WebcamCapture = () => {
-  const webcamRef = useRef(null);
-  const [imgSrc, setImgSrc] = useState(null);
+  const router = useRouter();
+  const webcamRef = useRef<Webcam>(null);
+  const [imgSrc, setImgSrc] = useState<MyFile | null>(null);
   const [imgFile, setImgFile] = useState(null);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef?.current?.getScreenshot();
-    console.log(imageSrc);
     setImgSrc(imageSrc);
     const file = dataURLtoFile(imageSrc, 'upload_img');
-    console.log(file);
     setImgFile(file);
+    onSubmitImageFile();
   }, [webcamRef]);
 
   const videoConstraints = {
-    width: 100,
-    height: 100,
+    width: '100vw',
+    height: '100vh',
     facingMode: 'environment',
   };
+
   useEffect(() => {
     if (navigator.mediaDevices.getUserMedia !== null) {
       navigator.getUserMedia(
         { video: true },
-        function (stream) {
-          stream.getTracks().forEach((x) => x.stop());
+        function (stream: any) {
+          stream.getTracks().forEach((x: any) => x.stop());
         },
-        (err) => console.log(err),
+        (err: any) => console.log(err),
       );
     }
   }, []);
@@ -67,21 +66,42 @@ const WebcamCapture = () => {
 
     return new File([u8arr], fileName, { type: mime });
   };
-  console.log(webcamRef);
 
+  const onSubmitImageFile = () => {
+    router.push('/result');
+  };
   return (
     <>
-      <div style={{ width: '100px', height: '100px', backgroundColor: 'gray' }}>
+      <div>
         <Webcam
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
           videoConstraints={videoConstraints}
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            left: '50%',
+            marginLeft: '-50%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
         />
       </div>
-      <button onClick={capture}>Capture photo</button>
+      <Button onClick={capture} />
       {imgSrc && <img src={imgSrc} />}
     </>
   );
 };
 export default UploadPage;
+
+const Button = styled.button`
+  position: fixed;
+  bottom: 3rem;
+  margin-left: calc(50% - 3.5rem);
+  width: 7rem;
+  height: 7rem;
+  border-radius: 3.5rem;
+  background=color: white;
+`;
