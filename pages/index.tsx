@@ -10,12 +10,9 @@ const Home: NextPage = () => {
   const file = useRef<HTMLInputElement>(null);
 
   const handleInputFile = async (e: any) => {
-    console.log(e);
     const files = e.target.files;
-    console.log(files);
 
     let img_url = URL.createObjectURL(files[0]);
-    console.log(img_url);
 
     const len = e.target.files.length;
     router.push('/result');
