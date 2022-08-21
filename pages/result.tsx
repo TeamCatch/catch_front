@@ -7,6 +7,10 @@ import { useEffect, useState } from 'react';
 import { Loading } from '../src/components/common';
 import styled from 'styled-components';
 
+interface ImagePorps {
+  readonly src: string;
+}
+
 const Result: NextPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +51,7 @@ const Result: NextPage = () => {
 
 export default Result;
 
-const Picture = styled.div`
+const Picture = styled.div<ImagePorps>`
   position: relative;
   @media screen and (min-width: 480px) {
     width: 240px;
