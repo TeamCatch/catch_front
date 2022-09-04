@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Webcam from 'react-webcam';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { postApi } from '../lib/api';
 
 interface MyFile extends File {
   lastModified: any;
@@ -51,13 +52,13 @@ const WebcamCapture = () => {
       const file = dataURLtoFile(imageSrc, 'upload_img');
       console.log(file);
       setImgFile(file);
-      onSubmitImageFile();
+      onSubmitImageFile(file);
     }
   }, [webcamRef]);
 
   const videoConstraints = {
-    width: isPC ? 400 : 2000,
-    height: isPC ? 400 : 2000,
+    width: 2000,
+    height: 2000,
     facingMode: 'environment',
   };
   console.log(videoConstraints);
@@ -91,9 +92,12 @@ const WebcamCapture = () => {
     return new File([u8arr], fileName, { type: mime });
   };
 
-  const onSubmitImageFile = () => {
-    router.push('/result');
+  const onSubmitImageFile = async (imgFile: File) => {
+    const result = await postApi.postImageFile(imgFile);
+    console.log(result);
+    router.push(`/result/?imageID=${result.imageId}`);
   };
+
   return (
     <>
       <div>

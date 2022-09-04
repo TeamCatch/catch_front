@@ -4,6 +4,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
+import { postApi } from '../lib/api';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -13,10 +14,13 @@ const Home: NextPage = () => {
     const files = e.target.files;
 
     let img_url = URL.createObjectURL(files[0]);
-
+    const result = await postApi.postImageFile(files[0]);
+    console.log(result);
     const len = e.target.files.length;
-    router.push('/result');
+    router.push(`/result/?imageID=${result.imageId}`);
   };
+
+  
   return (
     <div className={styles.container}>
       <Head>

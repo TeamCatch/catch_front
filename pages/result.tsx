@@ -8,6 +8,7 @@ import { Loading } from '../src/components/common';
 import styled from 'styled-components';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import BookIcon from '@mui/icons-material/Book';
+import { getApi } from '../lib/api';
 interface ImagePorps {
   readonly src: string;
 }
@@ -15,13 +16,29 @@ interface ImagePorps {
 const Result: NextPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }, []);
+  const [analysisResult, setAnaalysisResult] = useState({
+    type: '',
+    path: '',
+  });
 
-  console.log(`${styles.field_section_title_level1}${styles.title_font}`);
+  useEffect(() => {
+    if (router.query.imageID) {
+      const imageId = Number(router.query.imageID);
+      getReusltData(imageId);
+    } else if (router.query && !router.query.imageID) {
+      alert('비정상적인 접근입니다.');
+      router.replace('/');
+    }
+  }, [router.query]);
+
+  const getReusltData = async (imageId: number) => {
+    setIsLoading(true);
+    const response = await getApi.getClassificationResult(imageId);
+    const result = response?.result[0];
+    setAnaalysisResult(result);
+    setIsLoading(false);
+  };
+
   return (
     <div className={styles.container}>
       {isLoading ? (
@@ -34,7 +51,9 @@ const Result: NextPage = () => {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <h3 className={styles.name}>플라스틱</h3>
-          <Picture src={'/img/plastic_bottle3.jpg'} />
+          <Picture
+            src={`http://ec2-54-180-120-246.ap-northeast-2.compute.amazonaws.com/${analysisResult.path}`}
+          />
           <div className={styles.detail_content_field}>
             <h3 className={styles.field_title_text}>
               <AssignmentTurnedInIcon className={styles.field_icon} />
@@ -43,7 +62,7 @@ const Result: NextPage = () => {
             <div className={styles.field_section}>
               <h4 className={styles.field_section_title_level1}>확률</h4>
               <div className={styles.field_section_text}>
-                플라스틱 90% / 페트병 6% / 캔 4%{' '}
+                {analysisResult.type}
               </div>
             </div>
             <div className={styles.field_section}>
