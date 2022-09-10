@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-const API_DOMAIN =
-  'http://ec2-54-180-120-246.ap-northeast-2.compute.amazonaws.com/';
+const API_DOMAIN = 'https://catch-back.herokuapp.com/';
 
 const getClassificationResult = async (imageID: number) => {
   try {
