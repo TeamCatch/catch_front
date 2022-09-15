@@ -53,11 +53,7 @@ const Result: NextPage = () => {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <h3 className={styles.name}>{analysisResult?.type?.[0]?.label}</h3>
-          <Picture
-            src={`${API_DOMAIN}${analysisResult.path}`}
-            quality={75}
-            priority
-          />
+          <Picture src={`${API_DOMAIN}${analysisResult.path}`} priority />
           <div className={styles.detail_content_field}>
             <h3 className={styles.field_title_text}>
               <AssignmentTurnedInIcon className={styles.field_icon} />
