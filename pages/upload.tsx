@@ -30,9 +30,10 @@ const UploadPage: NextPage = () => {
 const WebcamCapture = () => {
   const router = useRouter();
   const webcamRef = useRef<Webcam>(null);
+  const [imgSrc, setImgSrc] = useState<string | null | undefined>(null);
+  const [imgFile, setImgFile] = useState<MyFile | null>(null);
   const [isPC, setIsPC] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
   let filter =
     'win16|win32|win64|wince|mac|macintel|macppc|mac68k|linux i686|linux armv7l|hp-ux|sunos';
 
@@ -49,7 +50,11 @@ const WebcamCapture = () => {
     setIsLoading(true);
     const imageSrc = webcamRef?.current?.getScreenshot();
     if (imageSrc) {
+      setImgSrc(imageSrc);
+      console.log(imageSrc);
       const file = dataURLtoFile(imageSrc, 'upload_img');
+      console.log(file);
+      setImgFile(file);
       onSubmitImageFile(file);
     }
   }, [webcamRef]);
@@ -59,7 +64,6 @@ const WebcamCapture = () => {
     height: isPC ? 400 : 2000,
     facingMode: 'environment',
   };
-  console.log(videoConstraints);
 
   useEffect(() => {
     let navi: any;
