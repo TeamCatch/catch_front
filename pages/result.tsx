@@ -47,17 +47,13 @@ const Result: NextPage = () => {
   const getReusltData = async (imageId: number) => {
     setIsLoading(true);
     const response = await getApi.getClassificationResult(imageId);
-    console.log(response);
-    if (response?.result) {
-      const result = response?.result?.[0];
-      const item_name = result?.type?.[0]?.label;
-      const type_description = category.filter(
-        (el) => el.category == item_name,
-      )[0];
-      console.log(type_description);
-      setAnaalysisResult(result);
-      setDescription(type_description);
-    }
+    const result = response?.result?.[0];
+    const type_description = category.filter(
+      (el) => el.category == result?.type?.[0]?.label,
+    )[0];
+    setAnaalysisResult(result);
+    setDescription(type_description);
+    setDescription;
     setIsLoading(false);
   };
 
