@@ -7,6 +7,7 @@ import Webcam from 'react-webcam';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { postApi } from '../lib/api';
+import { Loading } from '../src/components/common';
 
 interface MyFile extends File {
   lastModified: any;
@@ -32,6 +33,7 @@ const WebcamCapture = () => {
   const [imgSrc, setImgSrc] = useState<string | null | undefined>(null);
   const [imgFile, setImgFile] = useState<MyFile | null>(null);
   const [isPC, setIsPC] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   let filter =
     'win16|win32|win64|wince|mac|macintel|macppc|mac68k|linux i686|linux armv7l|hp-ux|sunos';
 
@@ -45,12 +47,11 @@ const WebcamCapture = () => {
   }, []);
 
   const capture = useCallback(() => {
+    setIsLoading(true);
     const imageSrc = webcamRef?.current?.getScreenshot();
     if (imageSrc) {
       setImgSrc(imageSrc);
-      console.log(imageSrc);
       const file = dataURLtoFile(imageSrc, 'upload_img');
-      console.log(file);
       setImgFile(file);
       onSubmitImageFile(file);
     }
@@ -61,7 +62,6 @@ const WebcamCapture = () => {
     height: 2000,
     facingMode: 'environment',
   };
-  console.log(videoConstraints);
 
   useEffect(() => {
     let navi: any;
@@ -94,30 +94,35 @@ const WebcamCapture = () => {
 
   const onSubmitImageFile = async (imgFile: File) => {
     const result = await postApi.postImageFile(imgFile);
-    console.log(result);
     router.push(`/result/?imageID=${result.imageId}`);
   };
 
   return (
     <>
-      <div>
-        <Webcam
-          audio={false}
-          ref={webcamRef}
-          screenshotFormat="image/jpeg"
-          videoConstraints={videoConstraints}
-          style={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            left: '50%',
-            marginLeft: '-50%',
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-        />
-      </div>
-      <Button onClick={capture} />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <div>
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                left: '50%',
+                marginLeft: '-50%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
+            />
+          </div>
+          <Button onClick={capture} />
+        </>
+      )}
     </>
   );
 };
