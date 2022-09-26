@@ -17,7 +17,6 @@ const Home: NextPage = () => {
     const files = e.target.files;
     let img_url = URL.createObjectURL(files[0]);
     const result = await postApi.postImageFile(files[0]);
-    console.log(result);
     const len = e.target.files.length;
     router.push(`/result/?imageID=${result.imageId}`);
   };

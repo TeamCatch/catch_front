@@ -3,7 +3,6 @@ import axios, { AxiosResponse } from 'axios';
 const API_DOMAIN = 'https://catch-back.herokuapp.com/';
 
 const postImageFile = async (imgFile: File) => {
-  console.log(imgFile);
   const formData = new FormData();
   formData.append('image', imgFile);
   try {
@@ -13,7 +12,6 @@ const postImageFile = async (imgFile: File) => {
       method: 'post',
       data: formData,
     });
-    console.log(response.data.data);
     console.log('[SUCCESS] POST IMAGE FILE', response.data.data);
     return response.data.data;
   } catch (e) {
