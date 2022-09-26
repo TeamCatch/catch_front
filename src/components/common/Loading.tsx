@@ -23,8 +23,16 @@ const Loading = () => {
     <>
       <ModalContainer>
         <div style={{ width: '8rem', height: '8rem' }} ref={loadingImg} />
-        <div style={{ fontSize: '1.6rem', fontWeight: '600' }}>
-          로딩 중입니다…
+        <div
+          style={{
+            fontSize: '1.6rem',
+            fontWeight: '600',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-all',
+            textAlign: 'center',
+          }}
+        >
+          {`분류 모델 동작 중입니다...\n잠시만 기다려주세요`}
         </div>
       </ModalContainer>
     </>
