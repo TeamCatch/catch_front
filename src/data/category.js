@@ -48,7 +48,7 @@ export const category = [
     ],
   },
   {
-    category: 'can',
+    category: 'metal',
     item_name: '캔류',
     how_to: [
       '내용물을 비우고, 물로 깨끗히 헹궈요.',
