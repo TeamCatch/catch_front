@@ -122,4 +122,10 @@ export const category = [
       },
     ],
   },
+  {
+    category: 'trash',
+    item_name: '일반쓰레기',
+    how_to: ['종량제봉투에 담아 배출해주세요'],
+    caution: [],
+  },
 ];
