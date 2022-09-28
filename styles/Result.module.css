@@ -167,7 +167,7 @@ element.style {
   color: #e67701;
 }
 .bar_graph_label {
-  width: 25%;
+  width: 10rem;
   margin-right: 10px;
   color: #1967d2;
   font-family: Google Sans;
@@ -195,19 +195,8 @@ element.style {
   border-radius: 5px;
 }
 
-.bar_graph_label {
-  width: 20%;
-  margin-right: 10px;
-  color: #1967d2;
-  font-family: Google Sans;
-  font-weight: 500;
-  font-size: 14px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
 .tm-bar-graph {
-  width: 70%;
+  width: calc(100% - 10rem);
   border-radius: 5px;
 }
 
